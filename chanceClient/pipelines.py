@@ -8,7 +8,4 @@
 
 class ChanceclientPipeline(object):
     def process_item(self, item, spider):
-        print('......'*10)
-        print(item.convert())
-        print('......'*10)
         return item
