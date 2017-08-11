@@ -1,6 +1,31 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from scrapy.loader import ItemLoader
 
+class ShiborRateItem(scrapy.Item):
+    pushDate   =scrapy.Field()
+    oneNight   =scrapy.Field()
+    oneWeek    =scrapy.Field()
+    twoWeek    =scrapy.Field()
+    oneMonth   =scrapy.Field()
+    threeMonth =scrapy.Field()
+    sixMonth   =scrapy.Field()
+    nineMonth  =scrapy.Field()
+    oneYear    =scrapy.Field()
+
+    def convert(self):
+        datas=dict(self)
+        res={}
+        res['pushDate']  =datas['pushDate'][0].strip()
+        res['oneNight']  =float(datas['oneNight'][0])
+        res['oneWeek']   =float(datas['oneWeek'][0])
+        res['twoWeek']   =float(datas['twoWeek'][0])
+        res['oneMonth']  =float(datas['oneMonth'][0])
+        res['threeMonth']=float(datas['threeMonth'][0])
+        res['sixMonth']  =float(datas['sixMonth'][0])
+        res['nineMonth'] =float(datas['nineMonth'][0])
+        res['oneYear']   =float(datas['oneYear'][0])
+        return res
 
 class ShiborspiderSpider(scrapy.Spider):
     name = 'shiborSpider'
@@ -8,33 +33,17 @@ class ShiborspiderSpider(scrapy.Spider):
     start_urls = ['http://www.shibor.org/shibor/web/html/shibor.html#']
 
     def parse(self, response):
-        # 发布时间记录在
-        # div 下的第一个table
-        # table 下的第一个table(tb2)
-        # tb2 这个table的第一个td中的记录
-        tb1=response.xpath('//div/descendant::table[position()=1]/descendant::table[position()=1]')
-        pushDate=tb1.xpath('.//td[position()=1]/text()').extract_first().strip()
-        print(pushDate)
-
-        # 各个期限的利率记录在
-        # div 下的第一个table
-        # table 下的第三个 table
-        tb3=response.xpath('//div/descendant::table[position()=1]/descendant::table[position()=3]')
-        # O/N
-        oneNight=tb3.xpath('.//tr[position()=1]/td[position()=3]/text()').extract_first().strip()
-        # 1W
-        oneWeek=tb3.xpath('.//tr[position()=2]/td[position()=3]/text()').extract_first().strip()
-        # 2W
-        twoWeek=tb3.xpath('.//tr[position()=3]/td[position()=3]/text()').extract_first().strip()
-        # 1M
-        oneMonth=tb3.xpath('.//tr[position()=4]/td[position()=3]/text()').extract_first().strip()
-        # 3M
-        threeMonth=tb3.xpath('.//tr[position()=5]/td[position()=3]/text()').extract_first().strip()
-        # 6M
-        sixMonth=tb3.xpath('.//tr[position()=6]/td[position()=3]/text()').extract_first().strip()
-        # 9M
-        nineMonth=tb3.xpath('.//tr[position()=7]/td[position()=3]/text()').extract_first().strip()
-        # 1Y
-        oneYear=tb3.xpath('.//tr[position()=8]/td[position()=3]/text()').extract_first().strip()
-        print(oneNight,oneWeek,twoWeek,oneMonth,threeMonth,sixMonth,nineMonth,oneYear)
+        sbil=ItemLoader(item=ShiborRateItem(),response=response)
+        xpathTb3='//div/descendant::table[position()=1]/descendant::table[position()=3]'
+        sbil.add_xpath('pushDate','//div/descendant::table[position()=1]/descendant::table[position()=1]'
+                                  '//td[position()=1]/text()')
+        sbil.add_xpath('oneNight'  ,xpathTb3 +'//tr[position()=1]/td[position()=3]/text()')
+        sbil.add_xpath('oneWeek'   ,xpathTb3 +'//tr[position()=2]/td[position()=3]/text()')
+        sbil.add_xpath('twoWeek'   ,xpathTb3 +'//tr[position()=3]/td[position()=3]/text()')
+        sbil.add_xpath('oneMonth'  ,xpathTb3 +'//tr[position()=4]/td[position()=3]/text()')
+        sbil.add_xpath('threeMonth',xpathTb3 +'//tr[position()=5]/td[position()=3]/text()')
+        sbil.add_xpath('sixMonth'  ,xpathTb3 +'//tr[position()=6]/td[position()=3]/text()')
+        sbil.add_xpath('nineMonth' ,xpathTb3 +'//tr[position()=7]/td[position()=3]/text()')
+        sbil.add_xpath('oneYear'   ,xpathTb3 +'//tr[position()=8]/td[position()=3]/text()')
+        print(sbil.load_item().convert())
         pass
