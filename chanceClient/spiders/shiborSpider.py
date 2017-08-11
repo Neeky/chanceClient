@@ -45,5 +45,4 @@ class ShiborspiderSpider(scrapy.Spider):
         sbil.add_xpath('sixMonth'  ,xpathTb3 +'//tr[position()=6]/td[position()=3]/text()')
         sbil.add_xpath('nineMonth' ,xpathTb3 +'//tr[position()=7]/td[position()=3]/text()')
         sbil.add_xpath('oneYear'   ,xpathTb3 +'//tr[position()=8]/td[position()=3]/text()')
-        print(sbil.load_item().convert())
-        pass
+        return sbil.load_item()
