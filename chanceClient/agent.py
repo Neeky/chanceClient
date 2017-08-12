@@ -25,7 +25,16 @@ class ShiborAgent(Agent):
     server="http://www.financedatas.com/component/"
     api="shibor/add"
 
-
+class CompanyListAgent(Agent):
+    api="cninfo/add/company"
+    def postToServer(self):
+        datas=self.item.convert()
+        url=self.ajaxaddress
+        for x in datas:
+            r=requests.post(url,data={'stockCode':x['stockCode'],
+                                    'name'     :x['name'],
+                                    'mainPage' :x['infoPage']})
+            print(r.text)
 
 def agentRouter(item):
     """
@@ -34,3 +43,7 @@ def agentRouter(item):
     if isinstance(item,ShiborRateItem):
         sa=ShiborAgent(item)
         sa.postToServer()
+    
+    if isinstance(item,CompanyListItem):
+        ci=CompanyListAgent(item)
+        ci.postToServer()
