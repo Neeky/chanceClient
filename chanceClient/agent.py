@@ -27,7 +27,7 @@ class ShiborAgent(Agent):
 
 class CompanyListAgent(Agent):
     server="http://www.financedatas.com/component/"
-    api="cninfo/add/company"
+    api="cninfo/add/company/basicinfo"
     def postToServer(self):
         datas=self.item.convert()
         url=self.ajaxaddress
