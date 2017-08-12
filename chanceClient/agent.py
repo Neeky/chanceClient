@@ -1,8 +1,8 @@
 # * --encoding-- utf8
 import requests
-from .spiders.cninfo import CompanyListItem
+from .spiders.cninfo       import CompanyListItem
 from .spiders.shiborSpider import ShiborRateItem
-
+from .spiders.sgeSpider    import GlodPriceItem 
 
 class Agent(object):
     "代理用来对已经爬下来的数据进行处理、如发送到server Agent作为所有其它代理的基类"
@@ -37,6 +37,18 @@ class CompanyListAgent(Agent):
                                     'mainPage' :x['infoPage']})
             print(r.text)
 
+class GlodPriceAgent(Agent):
+    api="glod/add/"
+    def postToServer(self):
+        datas=self.item.convert()
+        if datas['closing']==-1:
+            print('warning closing price equal -1 ...')
+            return
+        else:
+            url=self.ajaxaddress
+            r  =requests.post(url,datas)
+            print(r.text)
+
 def agentRouter(item):
     """
     一个Agent的分发器，不同的的Item分给不同的Agent
@@ -48,3 +60,7 @@ def agentRouter(item):
     if isinstance(item,CompanyListItem):
         ci=CompanyListAgent(item)
         ci.postToServer()
+    
+    if isinstance(item,GlodPriceItem):
+        gi=GlodPriceAgent(item)
+        gi.postToServer()

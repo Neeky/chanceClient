@@ -13,10 +13,10 @@ class GlodPriceItem(scrapy.Item):
         datas=dict(self)
         res  ={}
         res['contract'] =datas['contract'][0].strip() if datas['contract'][0] != None else 'Au99.99'
-        res['highest']  =float(datas['highest'][0])   if datas['highest'][0]  != None else -1
-        res['lowest']   =float(datas['lowest'][0])    if datas['lowest'][0]   != None else -1
-        res['opening']  =float(datas['opening'][0])   if datas['opening'][0]  != None else -1
-        res['closing']  =float(datas['closing'][0])   if datas['closing'][0]  != None else -1
+        res['highest']  =float(datas['highest'][0])   if datas['highest'][0]  != '-' else -1
+        res['lowest']   =float(datas['lowest'][0])    if datas['lowest'][0]   != '-' else -1
+        res['opening']  =float(datas['opening'][0])   if datas['opening'][0]  != '-' else -1
+        res['closing']  =float(datas['closing'][0])   if datas['closing'][0]  != '-' else -1
         return res
 
 class SgespiderSpider(scrapy.Spider):
