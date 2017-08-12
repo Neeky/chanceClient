@@ -17,14 +17,13 @@ class Agent(object):
         return "{0}{1}".format(self.server,self.api)
 
     def postToServer(self):
-        pass
+        url=self.ajaxaddress
+        requests.post(url,data=self.item.convert())
 
 
 class ShiborAgent(Agent):
+    server="http://www.financedatas.com/component/"
     api="shibor/add"
-    def postToServer(self):
-        url=self.ajaxaddress
-        requests.post(url,data=self.item.convert())
 
 
 
