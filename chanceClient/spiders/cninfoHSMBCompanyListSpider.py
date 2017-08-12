@@ -3,8 +3,8 @@ import scrapy
 from scrapy.loader import ItemLoader
 from .cninfo import CompanyListItem
 
-class CninfohszbcompanylistspiderSpider(scrapy.Spider):
-    name = 'cninfoHSZBCompanyListSpider'
+class CninfohsmbcompanylistspiderSpider(scrapy.Spider):
+    name = 'cninfoHSMBCompanyListSpider'
     allowed_domains = ['www.cninfo.com.cn']
     start_urls = ['http://www.cninfo.com.cn/cninfo-new/information/companylist']
 

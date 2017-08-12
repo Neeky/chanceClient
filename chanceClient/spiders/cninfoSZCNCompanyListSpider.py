@@ -9,7 +9,7 @@ class CompanyListItem(scrapy.Item):
     infoPage =scrapy.Field()
 """
 class CninfosszbcompanylistspiderSpider(scrapy.Spider):
-    name = 'cninfoCYBCompanyListSpider'
+    name = 'cninfoSZCNCompanyListSpider'
     allowed_domains = ['www.cninfo.com.cn']
     start_urls = ['http://www.cninfo.com.cn/cninfo-new/information/companylist']
 
