@@ -36,6 +36,12 @@ class CompanyListAgent(Agent):
                                     'name'     :x['name'],
                                     'mainPage' :x['infoPage']})
             print(r.text)
+        #把url最后一个参数写入本地文件
+        arg=datas[0]['infoPage'].split('?')[-1]
+        print(arg)
+        with open('/tmp/{0}.txt'.format(arg),'w') as f:
+            for x in datas:
+                f.write("{0}\n".format(x['infoPage'].split('?')[-1]))
 
 class GlodPriceAgent(Agent):
     api="glod/add/"
