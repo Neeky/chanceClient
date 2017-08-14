@@ -3,6 +3,7 @@ import requests
 from .spiders.cninfo       import CompanyListItem
 from .spiders.shiborSpider import ShiborRateItem
 from .spiders.sgeSpider    import GlodPriceItem 
+from .spiders.sse          import SseOverviewItem
 
 class Agent(object):
     "代理用来对已经爬下来的数据进行处理、如发送到server Agent作为所有其它代理的基类"
@@ -44,6 +45,7 @@ class CompanyListAgent(Agent):
                 f.write("{0}\n".format(x['infoPage'].split('?')[-1]))
 
 class GlodPriceAgent(Agent):
+    server="http://www.financedatas.com/component/"
     api="glod/add/"
     def postToServer(self):
         datas=self.item.convert()
@@ -54,6 +56,13 @@ class GlodPriceAgent(Agent):
             url=self.ajaxaddress
             r  =requests.post(url,datas)
             print(r.text)
+
+class SseOverViewAgent(Agent):
+    api='sse/add/overview'
+    def postToServer(self):
+        datas=self.item.convert()
+        print(datas)
+
 
 def agentRouter(item):
     """
@@ -70,3 +79,7 @@ def agentRouter(item):
     if isinstance(item,GlodPriceItem):
         gi=GlodPriceAgent(item)
         gi.postToServer()
+
+    if isinstance(item,SseOverviewItem):
+        si=SseOverViewAgent(item)
+        si.postToServer()
