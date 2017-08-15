@@ -58,10 +58,13 @@ class GlodPriceAgent(Agent):
             print(r.text)
 
 class SseOverViewAgent(Agent):
+    server="http://www.financedatas.com/component/"
     api='sse/add/overview'
     def postToServer(self):
         datas=self.item.convert()
-        print(datas)
+        url  =self.ajaxaddress
+        r    =requests.post(url,datas)
+        print(r.text)
 
 
 def agentRouter(item):
