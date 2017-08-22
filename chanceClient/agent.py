@@ -4,6 +4,7 @@ from .spiders.cninfo       import CompanyListItem
 from .spiders.shiborSpider import ShiborRateItem
 from .spiders.sgeSpider    import GlodPriceItem 
 from .spiders.sse          import SseOverviewItem
+from .spiders.chinaclear   import InvestorOverviewItem
 
 class Agent(object):
     "代理用来对已经爬下来的数据进行处理、如发送到server Agent作为所有其它代理的基类"
@@ -66,6 +67,13 @@ class SseOverViewAgent(Agent):
         r    =requests.post(url,datas)
         print(r.text)
 
+class ChinaClearInvestorOverviewAgent(Agent):
+    server="http://www.financedatas.com/component/"
+    api="chinaclear/add/investoroverview"
+    def postToServer(self):
+        datas=self.item.convert()
+        print(datas)
+
 
 def agentRouter(item):
     """
@@ -86,3 +94,7 @@ def agentRouter(item):
     if isinstance(item,SseOverviewItem):
         si=SseOverViewAgent(item)
         si.postToServer()
+    
+    if isinstance(item,InvestorOverviewItem):
+        cci=ChinaClearInvestorOverviewAgent(item)
+        cci.postToServer()
