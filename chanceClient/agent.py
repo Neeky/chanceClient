@@ -5,6 +5,7 @@ from .spiders.shiborSpider import ShiborRateItem
 from .spiders.sgeSpider    import GlodPriceItem 
 from .spiders.sse          import SseOverviewItem
 from .spiders.chinaclear   import InvestorOverviewItem
+from chanceClient.items    import IndexOverview 
 
 class Agent(object):
     "代理用来对已经爬下来的数据进行处理、如发送到server Agent作为所有其它代理的基类"
@@ -74,6 +75,10 @@ class ChinaClearInvestorOverviewAgent(Agent):
         datas=self.item.convert()
         print(datas)
 
+class CsindexIndexOverviewAgent(Agent):
+    #server="http://www.cstudio.com/component/"
+    api="csindex/add/overview"
+    
 
 def agentRouter(item):
     """
@@ -98,3 +103,7 @@ def agentRouter(item):
     if isinstance(item,InvestorOverviewItem):
         cci=ChinaClearInvestorOverviewAgent(item)
         cci.postToServer()
+
+    if isinstance(item,IndexOverview):
+        cio=CsindexIndexOverviewAgent(item)
+        cio.postToServer()
