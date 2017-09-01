@@ -76,7 +76,7 @@ class ChinaClearInvestorOverviewAgent(Agent):
         print(datas)
 
 class CsindexIndexOverviewAgent(Agent):
-    #server="http://www.cstudio.com/component/"
+    server="http://www.financedatas.com/component/"
     api="csindex/add/overview"
     
 
