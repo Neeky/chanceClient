@@ -82,7 +82,7 @@ class CsindexIndexOverviewAgent(Agent):
 
 class CsindexIndexDetailAgent(Agent):
     server="http://www.financedatas.com/component/"
-    api="csindex/add/index"
+    api="csindex/add/detail"
     
     
 
