@@ -6,6 +6,7 @@ from .spiders.sgeSpider    import GlodPriceItem
 from .spiders.sse          import SseOverviewItem
 from .spiders.chinaclear   import InvestorOverviewItem
 from chanceClient.items    import IndexOverview 
+from chanceClient.items    import IndexDetail
 
 class Agent(object):
     "代理用来对已经爬下来的数据进行处理、如发送到server Agent作为所有其它代理的基类"
@@ -78,6 +79,11 @@ class ChinaClearInvestorOverviewAgent(Agent):
 class CsindexIndexOverviewAgent(Agent):
     server="http://www.financedatas.com/component/"
     api="csindex/add/overview"
+
+class CsindexIndexDetailAgent(Agent):
+    server="http://www.financedatas.com/component/"
+    api="csindex/add/index"
+    
     
 
 def agentRouter(item):
@@ -107,3 +113,7 @@ def agentRouter(item):
     if isinstance(item,IndexOverview):
         cio=CsindexIndexOverviewAgent(item)
         cio.postToServer()
+
+    if isinstance(item,IndexDetail):
+        ind=CsindexIndexDetailAgent(item)
+        ind.postToServer()

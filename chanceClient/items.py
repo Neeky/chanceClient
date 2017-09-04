@@ -25,6 +25,22 @@ class IndexOverview(scrapy.Item):
         res['dp']       =datas['dp']
         return res
 
+class IndexDetail(scrapy.Item):
+    pushDate    =scrapy.Field()
+    indexName   =scrapy.Field()
+    closeValue  =scrapy.Field()
+    delta       =scrapy.Field()
+    deltaPercent=scrapy.Field()
+    def convert(self):
+        res={}
+        datas=dict(self)
+        res['pushDate']    =datas['pushDate']
+        res['indexName']   =datas['indexName']
+        res['closeValue']  =datas['closeValue']
+        res['delta']       =datas['delta']
+        res['deltaPercent']=datas['deltaPercent']
+        return res
+
 
 class ChanceclientItem(scrapy.Item):
     # define the fields for your item here like:
